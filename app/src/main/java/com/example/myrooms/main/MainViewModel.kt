@@ -1,4 +1,4 @@
-package com.example.myrooms
+package com.example.myrooms.main
 
 import android.util.Log
 import androidx.annotation.MainThread
