@@ -1,4 +1,4 @@
-package com.example.myrooms.main
+package com.example.myrooms.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
