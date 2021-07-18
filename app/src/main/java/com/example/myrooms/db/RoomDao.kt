@@ -15,7 +15,16 @@ interface RoomDao {
     suspend fun getRoomById(id: Int): RoomEntity?
 
     @Query("SELECT * FROM tb_rooms WHERE date ORDER BY date DESC")
-    suspend fun getRoomDate(): List<RoomEntity>?
+    suspend fun getRoombyDateDesc(): List<RoomEntity>?
+
+    @Query("SELECT * FROM tb_rooms WHERE date ORDER BY date ASC")
+    suspend fun getRoombyDateAsc(): List<RoomEntity>?
+
+    @Query("SELECT * FROM tb_rooms WHERE rate ORDER BY rate DESC")
+    suspend fun getRoombyRateDesc(): List<RoomEntity>?
+
+    @Query("SELECT * FROM tb_rooms WHERE rate ORDER BY rate ASC")
+    suspend fun getRoombyRateAsc(): List<RoomEntity>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRoom(roomEntity: RoomEntity): Long

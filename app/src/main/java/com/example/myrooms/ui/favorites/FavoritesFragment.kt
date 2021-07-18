@@ -24,7 +24,8 @@ class FavoritesFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavoritesBinding.inflate(layoutInflater)
-
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
         mAdapter = FavoritesAdapter(viewModel)
 
         binding.rvFavorites.apply {
@@ -33,15 +34,17 @@ class FavoritesFragment: Fragment() {
         }
 
         viewModel.favoritesList.observe(viewLifecycleOwner, Observer {
-            Log.d("aaa", "favoritesData = $it")
             mAdapter.submitList(it)
         })
 
+        viewModel.checkNumber.observe(viewLifecycleOwner, Observer {
+            viewModel.getRoomsSorted(it)
+        })
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getRooms()
+        viewModel.getRoomsSorted(viewModel.checkNumber.value!!)
     }
 }

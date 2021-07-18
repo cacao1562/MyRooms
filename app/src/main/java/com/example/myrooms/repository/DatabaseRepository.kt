@@ -50,4 +50,39 @@ class DatabaseRepository  @Inject constructor(
          }
       }
 
+   suspend fun getRoombyDateDesc() =
+      withContext(ioDispatcher) {
+         return@withContext try {
+            dao.getRoombyDateDesc()
+         }catch (e: Exception) {
+            null
+         }
+      }
+
+   suspend fun getRoombyDateAsc() =
+      withContext(ioDispatcher) {
+         return@withContext try {
+            dao.getRoombyDateAsc()
+         }catch (e: Exception) {
+            null
+         }
+      }
+
+   suspend fun getRoombyRateDesc() =
+      withContext(ioDispatcher) {
+         return@withContext try {
+            dao.getRoombyRateDesc()
+         }catch (e: Exception) {
+            null
+         }
+      }
+
+   suspend fun getRoombyRateAsc() =
+      withContext(ioDispatcher) {
+         return@withContext try {
+            dao.getRoombyRateAsc()
+         }catch (e: Exception) {
+            null
+         }
+      }
 }

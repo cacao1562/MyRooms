@@ -7,6 +7,7 @@ import com.example.myrooms.db.RoomEntity
 import com.example.myrooms.model.Product
 import com.example.myrooms.ui.BaseViewModel
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 fun ImageView.loadImageOrDefault(imgUrl: String) {
@@ -43,4 +44,9 @@ fun ImageView.setToggleHeart(product: Product, viewModel: BaseViewModel) {
         viewModel.insertRoom(data)
     }
     this.isSelected = !this.isSelected
+}
+
+fun Date.foramtToSimple(): String {
+    val sdf = SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.KOREA)
+    return sdf.format(this)
 }

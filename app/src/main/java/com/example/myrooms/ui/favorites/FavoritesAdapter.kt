@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myrooms.databinding.ItemFavoritesBinding
 import com.example.myrooms.db.RoomEntity
+import com.example.myrooms.foramtToSimple
 import com.example.myrooms.loadImageOrDefault
 import com.example.myrooms.model.Description
 import com.example.myrooms.model.Product
@@ -59,9 +60,10 @@ class FavoritesViewHolder(private val binding: ItemFavoritesBinding):
             roomEntity.thumbnail?.let {
                 ivFavoriteItemThumb.loadImageOrDefault(it)
             }
+            tvFavoriteItemDate.text = roomEntity.date?.foramtToSimple()
             ivFavoriteItemHeart.setOnClickListener {
                 viewModel.deleteRoomById(roomEntity.id)
-                viewModel.getRooms()
+                viewModel.getRoomsSorted(viewModel.checkNumber.value!!)
             }
         }
     }

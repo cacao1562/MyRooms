@@ -16,12 +16,30 @@ class FavoritesViewModel @Inject constructor(
     private val _favoritesList = MutableLiveData<List<RoomEntity>>().apply { value = emptyList() }
     val favoritesList: LiveData<List<RoomEntity>?> = _favoritesList
 
-    fun getRooms() {
+    val checkNumber = MutableLiveData<Int>(0)
+
+    fun setCheckNumber(num: Int) {
+        checkNumber.value = num
+    }
+
+    fun getRoomsSorted(num: Int) {
         viewModelScope.launch {
-            databaseRepository.getRooms()?.let {
-                _favoritesList.value = it
+            when(num) {
+                0 -> {
+                    databaseRepository.getRoombyDateDesc()?.let { _favoritesList.value = it }
+                }
+                1 -> {
+                    databaseRepository.getRoombyDateAsc()?.let { _favoritesList.value = it }
+                }
+                2 -> {
+                    databaseRepository.getRoombyRateDesc()?.let { _favoritesList.value = it }
+                }
+                3 -> {
+                    databaseRepository.getRoombyRateAsc()?.let { _favoritesList.value = it }
+                }
             }
         }
+
     }
 
 }
