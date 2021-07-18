@@ -9,12 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myrooms.databinding.ItemRoomBinding
 import com.example.myrooms.loadImageOrDefault
 import com.example.myrooms.model.Product
+import com.example.myrooms.setToggleHeart
 import com.example.myrooms.ui.home_detail.HomeDetailActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class RoomInfoAdapter: PagingDataAdapter<Product, RoomInfoViewHolder>(DIFF_CALLBACK) {
+class RoomInfoAdapter(
+    private val viewModel: HomeViewModel
+): PagingDataAdapter<Product, RoomInfoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomInfoViewHolder {
-        return RoomInfoViewHolder.from(parent)
+        return RoomInfoViewHolder.from(parent, viewModel)
     }
 
     override fun onBindViewHolder(holder: RoomInfoViewHolder, position: Int) {
@@ -36,7 +42,10 @@ class RoomInfoAdapter: PagingDataAdapter<Product, RoomInfoViewHolder>(DIFF_CALLB
 
 }
 
-class RoomInfoViewHolder(private val binding: ItemRoomBinding):
+class RoomInfoViewHolder(
+    private val binding: ItemRoomBinding,
+    private val vm: HomeViewModel
+):
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(product: Product) {
@@ -50,13 +59,20 @@ class RoomInfoViewHolder(private val binding: ItemRoomBinding):
             tvHomeItemTitle.text = product.name
             tvHomeItemRate.text = product.rate.toString()
             ivHomeItemThumb.loadImageOrDefault(product.thumbnail)
+            CoroutineScope(Dispatchers.Main).launch {
+                val result = vm.isFavorite(product.id)
+                ivHomeItemHeart.isSelected = result
+            }
+            ivHomeItemHeart.setOnClickListener {
+                ivHomeItemHeart.setToggleHeart(product, vm)
+            }
         }
     }
     companion object {
-        fun from(parent: ViewGroup): RoomInfoViewHolder {
+        fun from(parent: ViewGroup, viewModel: HomeViewModel): RoomInfoViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemRoomBinding.inflate(layoutInflater, parent, false)
-            return RoomInfoViewHolder(binding)
+            return RoomInfoViewHolder(binding, viewModel)
         }
     }
 }

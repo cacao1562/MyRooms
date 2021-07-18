@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myrooms.R
 import com.example.myrooms.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding

@@ -1,6 +1,7 @@
 package com.example.myrooms.ui.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FavoritesFragment: Fragment() {
 
     lateinit var binding: FragmentFavoritesBinding
-
     private val viewModel: FavoritesViewModel by viewModels()
-
     lateinit var mAdapter: FavoritesAdapter
 
     override fun onCreateView(
@@ -27,13 +26,22 @@ class FavoritesFragment: Fragment() {
         binding = FragmentFavoritesBinding.inflate(layoutInflater)
 
         mAdapter = FavoritesAdapter(viewModel)
-        viewModel.favoritesData.observe(viewLifecycleOwner, Observer { 
 
-        })
         binding.rvFavorites.apply {
             setHasFixedSize(true)
             adapter = mAdapter
         }
+
+        viewModel.favoritesList.observe(viewLifecycleOwner, Observer {
+            Log.d("aaa", "favoritesData = $it")
+            mAdapter.submitList(it)
+        })
+
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getRooms()
     }
 }

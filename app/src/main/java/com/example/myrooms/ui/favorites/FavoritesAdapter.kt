@@ -1,5 +1,6 @@
 package com.example.myrooms.ui.favorites
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myrooms.databinding.ItemFavoritesBinding
 import com.example.myrooms.db.RoomEntity
+import com.example.myrooms.loadImageOrDefault
+import com.example.myrooms.model.Description
+import com.example.myrooms.model.Product
+import com.example.myrooms.ui.home_detail.HomeDetailActivity
 
 class FavoritesAdapter(
     private val viewModel: FavoritesViewModel
@@ -38,7 +43,27 @@ class FavoritesViewHolder(private val binding: ItemFavoritesBinding):
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(viewModel: FavoritesViewModel, roomEntity: RoomEntity) {
+        itemView.setOnClickListener {
+            val intent = Intent(itemView.context, HomeDetailActivity::class.java).apply {
+                val description = Description(roomEntity.imagePath?:"", roomEntity.subject?:"", roomEntity.price?:0)
+                val product = Product(roomEntity.id, roomEntity.title?:"", roomEntity.thumbnail?:"", description, roomEntity.rate?:0F)
+                putExtra(HomeDetailActivity.EXTRA_PRODUCT, product)
+            }
+            itemView.context.startActivity(intent)
+        }
 
+        binding.apply {
+
+            tvFavoriteItemTitle.text = roomEntity.title
+            tvFavoriteItemRate.text = roomEntity.rate.toString()
+            roomEntity.thumbnail?.let {
+                ivFavoriteItemThumb.loadImageOrDefault(it)
+            }
+            ivFavoriteItemHeart.setOnClickListener {
+                viewModel.deleteRoomById(roomEntity.id)
+                viewModel.getRooms()
+            }
+        }
     }
 
     companion object {

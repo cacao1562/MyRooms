@@ -18,8 +18,11 @@ interface RoomDao {
     suspend fun getRoomDate(): List<RoomEntity>?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(roomEntity: RoomEntity): Long
+    suspend fun insertRoom(roomEntity: RoomEntity): Long
 
+    /**
+     * @return the number of tasks deleted. This should always be 1.
+     */
     @Query("DELETE FROM tb_rooms WHERE id = :id")
     suspend fun deleteRoomById(id: Int): Int
 

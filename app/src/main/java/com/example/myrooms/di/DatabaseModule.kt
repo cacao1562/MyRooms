@@ -1,12 +1,13 @@
 package com.example.myrooms.di
 
-import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.example.myrooms.db.RoomDao
 import com.example.myrooms.db.RoomInfoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,7 +17,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(app: Application): RoomInfoDatabase {
+    fun provideDatabase(@ApplicationContext app: Context): RoomInfoDatabase {
         return Room
             .databaseBuilder(app, RoomInfoDatabase::class.java, "roomInfo_db")
             .fallbackToDestructiveMigration()
@@ -24,6 +25,7 @@ object DatabaseModule {
     }
 
     @Provides
+    @Singleton
     fun provideRoomDao(roomInfoDatabase: RoomInfoDatabase): RoomDao{
         return roomInfoDatabase.roomDao()
     }

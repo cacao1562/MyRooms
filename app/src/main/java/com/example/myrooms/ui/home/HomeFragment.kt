@@ -26,7 +26,7 @@ class HomeFragment: Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        mAdapter = RoomInfoAdapter()
+        mAdapter = RoomInfoAdapter(viewModel)
         binding.rvHome.apply {
             setHasFixedSize(true)
             adapter = mAdapter
