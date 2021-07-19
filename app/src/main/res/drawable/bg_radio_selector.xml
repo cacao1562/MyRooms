@@ -2,13 +2,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_checked="false"
-        android:drawable="@drawable/bg_radio_default"
-        android:color="#B1B1B1">
+        android:drawable="@drawable/bg_radio_default">
     </item>
 
     <item android:state_checked="true"
-        android:drawable="@drawable/bg_radio_checked"
-        android:color="@android:color/white">
+        android:drawable="@drawable/bg_radio_checked">
     </item>
 
 </selector>

@@ -37,7 +37,7 @@
                 android:text="최근등록순"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:textColor="@drawable/bg_radio_selector"
+                android:textColor="@drawable/radio_text_color_selector"
                 android:checked="@{viewmodel.checkNumber == 0}"
                 android:onClick="@{()->viewmodel.setCheckNumber(0)}"/>
 
@@ -52,7 +52,7 @@
                 android:text="오래된등록순"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:textColor="@drawable/bg_radio_selector"
+                android:textColor="@drawable/radio_text_color_selector"
                 android:checked="@{viewmodel.checkNumber == 1}"
                 android:onClick="@{()->viewmodel.setCheckNumber(1)}"/>
 
@@ -67,7 +67,7 @@
                 android:text="평점높은순"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:textColor="@drawable/bg_radio_selector"
+                android:textColor="@drawable/radio_text_color_selector"
                 android:checked="@{viewmodel.checkNumber == 2}"
                 android:onClick="@{()->viewmodel.setCheckNumber(2)}"/>
 
@@ -82,7 +82,7 @@
                 android:text="평점낮은순"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:textColor="@drawable/bg_radio_selector"
+                android:textColor="@drawable/radio_text_color_selector"
                 android:checked="@{viewmodel.checkNumber == 3}"
                 android:onClick="@{()->viewmodel.setCheckNumber(3)}"/>
 

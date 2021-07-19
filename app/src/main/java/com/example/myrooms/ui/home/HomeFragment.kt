@@ -38,4 +38,9 @@ class HomeFragment: Fragment() {
         }
         return binding.root
     }
+
+    override fun onResume() {
+        super.onResume()
+        mAdapter.notifyDataSetChanged()
+    }
 }
