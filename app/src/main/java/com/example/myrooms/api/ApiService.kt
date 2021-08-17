@@ -10,4 +10,7 @@ interface ApiService {
     @GET("App/json/{page}.json")
     suspend fun fetchRooms(@Path("page") page: Int) : ApiResponse<RoomsResponse>
 
+    @GET("App/json/{page}.json")
+    suspend fun fetchRoomsNew(@Path("page") page: Int) : RoomsResponse
+
 }

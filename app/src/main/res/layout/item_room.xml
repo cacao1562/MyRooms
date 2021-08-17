@@ -1,73 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="16dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:background="@color/white"
-    android:foreground="?selectableItemBackground"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/iv_home_item_thumb"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1.43:1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+<layout>
 
-    <ImageView
-        android:id="@+id/iv_home_item_heart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/bg_heart_selector"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="data"
+            type="com.example.myrooms.db.RoomEntity" />
+        <variable
+            name="viewModel"
+            type="com.example.myrooms.ui.home.HomeDataViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_home_item_title"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textStyle="bold"
-        android:textSize="22dp"
-        android:textColor="#222222"
-        app:layout_constraintTop_toBottomOf="@+id/iv_home_item_thumb"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:background="@color/white"
+        android:foreground="?selectableItemBackground"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp">
 
-    <ImageView
-        android:id="@+id/iv_home_item_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_star_24"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_item_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:tint="#FD9647" />
+        <ImageView
+            android:id="@+id/iv_home_item_thumb"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:loadImageOrDefault="@{data.thumbnail}"
+            app:layout_constraintDimensionRatio="1.43:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_home_item_rate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="17dp"
-        android:textStyle="bold"
-        android:textColor="#222222"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_item_title"
-        app:layout_constraintStart_toEndOf="@+id/iv_home_item_star"/>
+        <ImageView
+            android:id="@+id/iv_home_item_heart"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/bg_heart_selector"
+            app:isSelected="@{data.isFavorite()}"
+            android:onClick="@{(v) -> viewModel.udpateFavorite(data.id, v.isSelected)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="#dcdcdc"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_item_rate"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <TextView
+            android:id="@+id/tv_home_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#222222"
+            android:textSize="22dp"
+            android:textStyle="bold"
+            android:text="@{data.title}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_home_item_thumb" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/iv_home_item_star"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_item_title"
+            app:tint="#FD9647" />
+
+        <TextView
+            android:id="@+id/tv_home_item_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#222222"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:text="@{data.stringRate}"
+            app:layout_constraintStart_toEndOf="@+id/iv_home_item_star"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_item_title" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#dcdcdc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_home_item_rate" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

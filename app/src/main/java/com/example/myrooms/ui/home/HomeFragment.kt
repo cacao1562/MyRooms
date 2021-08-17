@@ -9,38 +9,47 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.myrooms.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
 
+    companion object {
+        fun newInstance() = HomeFragment()
+    }
+
     lateinit var binding: FragmentHomeBinding
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeDataViewModel by viewModels()
     lateinit var mAdapter: RoomInfoAdapter
+    private var job: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         mAdapter = RoomInfoAdapter(viewModel)
         binding.rvHome.apply {
             setHasFixedSize(true)
             adapter = mAdapter
         }
-        lifecycleScope.launchWhenCreated {
-            viewModel.roomsProduct.collectLatest {
-                mAdapter.submitData(it)
-            }
-        }
+
+        getRooms()
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        mAdapter.notifyDataSetChanged()
+    private fun getRooms() {
+        job?.cancel()
+        job = lifecycleScope.launch {
+            viewModel.getRooms().collectLatest {
+                mAdapter.submitData(it)
+            }
+        }
     }
+
 }

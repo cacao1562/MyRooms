@@ -17,8 +17,8 @@ class ViewPagerAdapter(
     override fun createFragment(position: Int): Fragment {
 
         return when (position) {
-            0 -> HomeFragment()
-            1 -> FavoritesFragment()
+            0 -> HomeFragment.newInstance()
+            1 -> FavoritesFragment.newInstance()
             else -> error("No Fragment")
         }
     }

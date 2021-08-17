@@ -14,24 +14,6 @@ class DatabaseRepository  @Inject constructor(
 
    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-   suspend fun insertRoom(roomEntity: RoomEntity) =
-      withContext(ioDispatcher) {
-         return@withContext try {
-            dao.insertRoom(roomEntity)
-         }catch (e: Exception) {
-            null
-         }
-      }
-
-   suspend fun deleteRoomById(id: Int) =
-      withContext(ioDispatcher) {
-         return@withContext try {
-            dao.deleteRoomById(id)
-         }catch (e: Exception){
-            null
-         }
-      }
-
    suspend fun getRooms() =
       withContext(ioDispatcher) {
          return@withContext try {

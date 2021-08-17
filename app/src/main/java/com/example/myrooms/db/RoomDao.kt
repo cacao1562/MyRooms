@@ -1,38 +1,48 @@
 package com.example.myrooms.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface RoomDao {
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllRoom(roomEntity: List<RoomEntity>)
+
     @Query("SELECT * FROM tb_rooms")
-    suspend fun getRooms(): List<RoomEntity>
+    fun getRooms(): PagingSource<Int, RoomEntity>
+
+    @Query("UPDATE tb_rooms SET isFavorite = :favorite, date = :time  WHERE id = :id")
+    fun updateFavorite(id: Int, favorite: Boolean, time: Date = Calendar.getInstance(Locale.KOREA).time)
+
+    @Query("SELECT isFavorite FROM tb_rooms WHERE id = :id")
+    fun isFavorite(id: Int): Boolean
+
+    @Query("DELETE FROM tb_rooms")
+    suspend fun clearRooms()
 
     @Query("SELECT * FROM tb_rooms WHERE id = :id")
-    suspend fun getRoomById(id: Int): RoomEntity?
+    fun getRoomById(id: Int): LiveData<RoomEntity>
 
-    @Query("SELECT * FROM tb_rooms WHERE date ORDER BY date DESC")
-    suspend fun getRoombyDateDesc(): List<RoomEntity>?
+    @Query("SELECT * FROM tb_rooms, tb_favorite WHERE tb_rooms.id = tb_favorite.id ORDER BY date DESC")
+    fun getRoombyDateDesc(): Flow<List<RoomEntity>>
 
-    @Query("SELECT * FROM tb_rooms WHERE date ORDER BY date ASC")
-    suspend fun getRoombyDateAsc(): List<RoomEntity>?
+    @Query("SELECT * FROM tb_rooms, tb_favorite WHERE tb_rooms.id = tb_favorite.id ORDER BY date ASC")
+    fun getRoombyDateAsc(): Flow<List<RoomEntity>>
 
-    @Query("SELECT * FROM tb_rooms WHERE rate ORDER BY rate DESC")
-    suspend fun getRoombyRateDesc(): List<RoomEntity>?
+    @Query("SELECT * FROM tb_rooms, tb_favorite WHERE tb_rooms.id = tb_favorite.id ORDER BY rate DESC")
+    fun getRoombyRateDesc(): Flow<List<RoomEntity>>
 
-    @Query("SELECT * FROM tb_rooms WHERE rate ORDER BY rate ASC")
-    suspend fun getRoombyRateAsc(): List<RoomEntity>?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertRoom(roomEntity: RoomEntity): Long
+    @Query("SELECT * FROM tb_rooms, tb_favorite WHERE tb_rooms.id = tb_favorite.id ORDER BY rate ASC")
+    fun getRoombyRateAsc(): Flow<List<RoomEntity>>
 
     /**
      * @return the number of tasks deleted. This should always be 1.
      */
     @Query("DELETE FROM tb_rooms WHERE id = :id")
-    suspend fun deleteRoomById(id: Int): Int
+    fun deleteRoomById(id: Int)
 
 }

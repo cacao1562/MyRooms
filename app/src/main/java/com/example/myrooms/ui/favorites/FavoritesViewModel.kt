@@ -1,45 +1,45 @@
 package com.example.myrooms.ui.favorites
 
-import androidx.lifecycle.*
-import com.example.myrooms.db.RoomEntity
-import com.example.myrooms.repository.DatabaseRepository
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.myrooms.db.RoomInfoDatabase
 import com.example.myrooms.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-    private val databaseRepository: DatabaseRepository
-): BaseViewModel(databaseRepository) {
+    private val database: RoomInfoDatabase
+): BaseViewModel(database) {
 
-    private val _favoritesList = MutableLiveData<List<RoomEntity>>().apply { value = emptyList() }
-    val favoritesList: LiveData<List<RoomEntity>?> = _favoritesList
+    val checkNumber: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val favoritesFlow = checkNumber.flatMapLatest { index ->
+        when(index) {
+            0 -> {
+                database.roomDao().getRoombyDateDesc()
+            }
+            1 -> {
+                database.roomDao().getRoombyDateAsc()
+            }
+            2 -> {
+                database.roomDao().getRoombyRateDesc()
+            }
+            3 -> {
+                database.roomDao().getRoombyRateAsc()
+            }
+            else -> {
+                database.roomDao().getRoombyDateDesc()
+            }
+        }
+    }
 
-    val checkNumber = MutableLiveData<Int>(0)
+    val favoritesList = favoritesFlow.asLiveData(viewModelScope.coroutineContext)
+
 
     fun setCheckNumber(num: Int) {
         checkNumber.value = num
-    }
-
-    fun getRoomsSorted(num: Int) {
-        viewModelScope.launch {
-            when(num) {
-                0 -> {
-                    databaseRepository.getRoombyDateDesc()?.let { _favoritesList.value = it }
-                }
-                1 -> {
-                    databaseRepository.getRoombyDateAsc()?.let { _favoritesList.value = it }
-                }
-                2 -> {
-                    databaseRepository.getRoombyRateDesc()?.let { _favoritesList.value = it }
-                }
-                3 -> {
-                    databaseRepository.getRoombyRateAsc()?.let { _favoritesList.value = it }
-                }
-            }
-        }
-
     }
 
 }

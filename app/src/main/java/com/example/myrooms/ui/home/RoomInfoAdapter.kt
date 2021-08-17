@@ -7,17 +7,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myrooms.databinding.ItemRoomBinding
-import com.example.myrooms.loadImageOrDefault
-import com.example.myrooms.model.Product
-import com.example.myrooms.setToggleHeart
+import com.example.myrooms.db.RoomEntity
 import com.example.myrooms.ui.home_detail.HomeDetailActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class RoomInfoAdapter(
-    private val viewModel: HomeViewModel
-): PagingDataAdapter<Product, RoomInfoViewHolder>(DIFF_CALLBACK) {
+    private val viewModel: HomeDataViewModel
+): PagingDataAdapter<RoomEntity, RoomInfoViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomInfoViewHolder {
         return RoomInfoViewHolder.from(parent, viewModel)
@@ -30,12 +25,12 @@ class RoomInfoAdapter(
 
 
     companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<Product> =
-            object : DiffUtil.ItemCallback<Product>() {
-                override fun areItemsTheSame(oldItem: Product, newItem: Product) =
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<RoomEntity> =
+            object : DiffUtil.ItemCallback<RoomEntity>() {
+                override fun areItemsTheSame(oldItem: RoomEntity, newItem: RoomEntity) =
                     oldItem.id == newItem.id
 
-                override fun areContentsTheSame(oldItem: Product, newItem: Product) =
+                override fun areContentsTheSame(oldItem: RoomEntity, newItem: RoomEntity) =
                     oldItem == newItem
             }
     }
@@ -44,32 +39,22 @@ class RoomInfoAdapter(
 
 class RoomInfoViewHolder(
     private val binding: ItemRoomBinding,
-    private val vm: HomeViewModel
-):
-    RecyclerView.ViewHolder(binding.root) {
+    private val vm: HomeDataViewModel
+): RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(product: Product) {
+    fun bind(data: RoomEntity) {
         itemView.setOnClickListener {
             val intent = Intent(itemView.context, HomeDetailActivity::class.java).apply {
-                putExtra(HomeDetailActivity.EXTRA_PRODUCT, product)
+                putExtra(HomeDetailActivity.EXTRA_ID, data.id)
             }
             itemView.context.startActivity(intent)
         }
-        binding.apply {
-            tvHomeItemTitle.text = product.name
-            tvHomeItemRate.text = product.rate.toString()
-            ivHomeItemThumb.loadImageOrDefault(product.thumbnail)
-            CoroutineScope(Dispatchers.Main).launch {
-                val result = vm.isFavorite(product.id)
-                ivHomeItemHeart.isSelected = result
-            }
-            ivHomeItemHeart.setOnClickListener {
-                ivHomeItemHeart.setToggleHeart(product, vm)
-            }
-        }
+        binding.data = data
+        binding.viewModel = vm
+
     }
     companion object {
-        fun from(parent: ViewGroup, viewModel: HomeViewModel): RoomInfoViewHolder {
+        fun from(parent: ViewGroup, viewModel: HomeDataViewModel): RoomInfoViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ItemRoomBinding.inflate(layoutInflater, parent, false)
             return RoomInfoViewHolder(binding, viewModel)

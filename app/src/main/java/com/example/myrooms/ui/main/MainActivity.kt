@@ -1,7 +1,7 @@
 package com.example.myrooms.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myrooms.R
 import com.example.myrooms.databinding.ActivityMainBinding
@@ -23,6 +23,7 @@ class MainActivity: AppCompatActivity() {
     private fun initView() {
         binding.mainViewpager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
         binding.mainViewpager.registerOnPageChangeCallback(viewpagerCallback)
+        binding.mainViewpager.isUserInputEnabled = false
 
         binding.bnMain.setOnItemSelectedListener {
             when(it.itemId) {

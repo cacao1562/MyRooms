@@ -7,10 +7,12 @@ import androidx.room.TypeConverters
 import java.util.*
 
 
-@Database(entities = [RoomEntity::class], version = 1, exportSchema = false)
+@Database(entities = [RoomEntity::class, RemoteKeys::class, FavoriteEntity::class], version = 3, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class RoomInfoDatabase : RoomDatabase() {
     abstract fun roomDao(): RoomDao
+    abstract fun favoriteDao(): FavoriteDao
+    abstract fun remoteKeyDao(): RemoteKeysDao
 }
 
 class Converters {

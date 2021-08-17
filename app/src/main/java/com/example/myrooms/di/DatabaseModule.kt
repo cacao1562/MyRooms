@@ -2,6 +2,7 @@ package com.example.myrooms.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.myrooms.db.FavoriteDao
 import com.example.myrooms.db.RoomDao
 import com.example.myrooms.db.RoomInfoDatabase
 import dagger.Module
@@ -29,4 +30,11 @@ object DatabaseModule {
     fun provideRoomDao(roomInfoDatabase: RoomInfoDatabase): RoomDao{
         return roomInfoDatabase.roomDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteDao(roomInfoDatabase: RoomInfoDatabase): FavoriteDao{
+        return roomInfoDatabase.favoriteDao()
+    }
+
 }

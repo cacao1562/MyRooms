@@ -21,12 +21,12 @@ class HomeDataSource @Inject constructor(
                 onComplete = {},
                 onError = { throw Exception(it) }
             )
-            val responseData = response.first().product
+            val responseData = response.first()?.product
 
             val prevKey = if (currentLoadingPageKey == 1) null else currentLoadingPageKey - 1
 
             return LoadResult.Page(
-                data = responseData,
+                data = responseData?: emptyList(),
                 prevKey = prevKey,
                 nextKey = currentLoadingPageKey.plus(1)
             )

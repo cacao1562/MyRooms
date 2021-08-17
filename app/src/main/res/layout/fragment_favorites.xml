@@ -38,7 +38,7 @@
                 android:textAlignment="center"
                 android:textSize="12dp"
                 android:textColor="@drawable/radio_text_color_selector"
-                android:checked="@{viewmodel.checkNumber == 0}"
+                android:checked="@{viewmodel.checkNumber.value == 0}"
                 android:onClick="@{()->viewmodel.setCheckNumber(0)}"/>
 
             <RadioButton
@@ -53,7 +53,7 @@
                 android:textAlignment="center"
                 android:textSize="12dp"
                 android:textColor="@drawable/radio_text_color_selector"
-                android:checked="@{viewmodel.checkNumber == 1}"
+                android:checked="@{viewmodel.checkNumber.value == 1}"
                 android:onClick="@{()->viewmodel.setCheckNumber(1)}"/>
 
             <RadioButton
@@ -68,7 +68,7 @@
                 android:textAlignment="center"
                 android:textSize="12dp"
                 android:textColor="@drawable/radio_text_color_selector"
-                android:checked="@{viewmodel.checkNumber == 2}"
+                android:checked="@{viewmodel.checkNumber.value == 2}"
                 android:onClick="@{()->viewmodel.setCheckNumber(2)}"/>
 
             <RadioButton
@@ -83,7 +83,7 @@
                 android:textAlignment="center"
                 android:textSize="12dp"
                 android:textColor="@drawable/radio_text_color_selector"
-                android:checked="@{viewmodel.checkNumber == 3}"
+                android:checked="@{viewmodel.checkNumber.value == 3}"
                 android:onClick="@{()->viewmodel.setCheckNumber(3)}"/>
 
         </RadioGroup>
