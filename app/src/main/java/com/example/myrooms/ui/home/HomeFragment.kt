@@ -37,6 +37,7 @@ class HomeFragment: Fragment() {
         binding.rvHome.apply {
             setHasFixedSize(true)
             adapter = mAdapter
+            itemAnimator = null
         }
 
         getRooms()
